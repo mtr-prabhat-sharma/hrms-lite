@@ -1,0 +1,32 @@
+.table-card {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.attendance-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.attendance-table th,
+.attendance-table td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+.present {
+  color: green;
+  font-weight: 600;
+}
+
+.absent {
+  color: red;
+  font-weight: 600;
+}
+
+.empty {
+  text-align: center;
+  padding: 20px;
+}
