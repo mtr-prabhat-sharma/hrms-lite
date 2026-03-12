@@ -4,31 +4,18 @@
   padding: 20px;
 }
 
-.attendance-table {
+table {
   width: 100%;
-  border-collapse: collapse;
-}
-
-.attendance-table th,
-.attendance-table td {
-  padding: 12px;
-  border-bottom: 1px solid #ddd;
-  text-align: left;
 }
 
 .present {
   color: green;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .absent {
   color: red;
-  font-weight: 600;
-}
-
-.empty {
-  text-align: center;
-  padding: 20px;
+  font-weight: 500;
 }
 
 .add-button {

@@ -4,6 +4,7 @@ from app.models import employee_model, attendance_model
 from app.routes import employee_routes, attendance_routes
 from fastapi.middleware.cors import CORSMiddleware
 
+
 employee_model.Base.metadata.create_all(bind=engine)
 attendance_model.Base.metadata.create_all(bind=engine)
 

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-
+from sqlalchemy.exc import IntegrityError
 from app.database.db import SessionLocal
 from app.models.attendance_model import Attendance
 from app.models.employee_model import Employee
@@ -36,11 +36,19 @@ def mark_attendance(attendance: AttendanceCreate, db: Session = Depends(get_db))
         status=attendance.status
     )
 
-    db.add(new_attendance)
-    db.commit()
-    db.refresh(new_attendance)
+    try:
+        db.add(new_attendance)
+        db.commit()
+        db.refresh(new_attendance)
+        return new_attendance
 
-    return new_attendance
+    except IntegrityError:
+        db.rollback()
+
+        raise HTTPException(
+            status_code=400,
+            detail="Attendance already recorded for this employee on this date"
+        )
 
 
 # GET ALL ATTENDANCE RECORDS

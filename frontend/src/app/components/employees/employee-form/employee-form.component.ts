@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { EmployeeService } from '../../../services/employee.service';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-employee-form',
@@ -19,7 +20,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatInputModule,
     MatButtonModule,
     MatCardModule,
-    MatSelectModule 
+    MatSelectModule,
+    MatSnackBarModule
   ],
   providers: [],
   templateUrl: './employee-form.component.html',
@@ -37,7 +39,7 @@ export class EmployeeFormComponent {
   'Marketing'
 ];
 
-  constructor(private fb: FormBuilder, private employeeService: EmployeeService) {
+  constructor(private fb: FormBuilder, private employeeService: EmployeeService,  private snackBar: MatSnackBar,) {
 
     this.employeeForm = this.fb.group({
       employee_id: ['', Validators.required],
@@ -61,14 +63,27 @@ export class EmployeeFormComponent {
     next: (res) => {
       console.log('Employee created', res);
 
-      alert('Employee added successfully');
+       this.snackBar.open('Employee created successfully', 'Close', {
+          duration: 3000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+        });
+
 
       this.employeeForm.reset();
       this.submitted = false;
     },
     error: (err) => {
       console.error(err);
-      alert(err.error.detail || 'Error creating employee');
+             this.snackBar.open(
+        err?.error?.detail || 'Error marking attendance',
+        'Close',
+        {
+          duration: 3000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top'
+        }
+      );
     }
   });
 

@@ -15,12 +15,13 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { NoRecordsComponent } from '../../../shared/no-records/no-records.component';
 
 @Component({
   selector: 'app-employee-list',
   standalone: true,
   imports: [CommonModule, MatTableModule, MatButtonModule, MatCardModule, MatIconModule,
-  MatFormFieldModule, MatInputModule, MatPaginatorModule, RouterModule, MatTooltipModule ],
+  MatFormFieldModule, MatInputModule, MatPaginatorModule, RouterModule, MatTooltipModule, NoRecordsComponent ],
   templateUrl: './employee-list.component.html',
   styleUrl: './employee-list.component.scss',
 })

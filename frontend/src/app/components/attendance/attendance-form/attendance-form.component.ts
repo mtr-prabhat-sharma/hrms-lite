@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -8,7 +8,11 @@ import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { Employee } from '../../../models/employee.model';
 import { AttendanceService } from '../../../services/attendance.service';
-
+import { EmployeeService } from '../../../services/employee.service';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-attendance-form',
@@ -20,32 +24,43 @@ import { AttendanceService } from '../../../services/attendance.service';
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatIconModule,
+    MatSnackBarModule,
   ],
   templateUrl: './attendance-form.component.html',
   styleUrl: './attendance-form.component.scss',
 })
-export class AttendanceFormComponent {
-    attendanceForm: FormGroup;
+export class AttendanceFormComponent implements OnInit {
+  attendanceForm: FormGroup;
   submitted = false;
 
   employees: Employee[] = [
     { employee_id: 'EMP001', full_name: 'John Doe' },
     { employee_id: 'EMP002', full_name: 'Jane Smith' },
-    { employee_id: 'EMP003', full_name: 'Mike Johnson' }
+    { employee_id: 'EMP003', full_name: 'Mike Johnson' },
   ];
 
-  constructor(private fb: FormBuilder,  private attendanceService: AttendanceService) {
-
+  constructor(
+    private fb: FormBuilder,
+    private attendanceService: AttendanceService,
+    private employeeService: EmployeeService,
+    private snackBar: MatSnackBar,
+  ) {
     this.attendanceForm = this.fb.group({
       employee_id: ['', Validators.required],
       date: ['', Validators.required],
-      status: ['', Validators.required]
+      status: ['', Validators.required],
     });
-
   }
 
- onSubmit() {
+  ngOnInit(): void {
+    this.loadEmployees();
+  }
+
+onSubmit() {
 
   this.submitted = true;
 
@@ -53,22 +68,43 @@ export class AttendanceFormComponent {
     return;
   }
 
-  this.attendanceService.markAttendance(this.attendanceForm.value)
-  .subscribe({
-    next: (res) => {
-      console.log('Attendance saved', res);
+  const formValue = this.attendanceForm.value;
 
-      alert('Attendance recorded');
+  const payload = {
+    ...formValue,
+    date: formValue.date.toISOString().split('T')[0] // convert to YYYY-MM-DD
+  };
+
+  this.attendanceService.markAttendance(payload).subscribe({
+
+    next: (res) => {
+      this.snackBar.open('Attendance recorded successfully', 'Close', {
+        duration: 3000
+      });
 
       this.attendanceForm.reset();
       this.submitted = false;
     },
+
     error: (err) => {
-      console.error(err);
-      alert(err.error.detail || 'Error marking attendance');
+      this.snackBar.open(err.error.detail || 'Error marking attendance', 'Close', {
+        duration: 3000
+      });
     }
+
   });
 
 }
 
+  loadEmployees() {
+    this.employeeService.getEmployees().subscribe({
+      next: (data) => {
+        this.employees = data;
+      },
+
+      error: (err) => {
+        console.error(err);
+      },
+    });
+  }
 }

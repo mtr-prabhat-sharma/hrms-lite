@@ -7,15 +7,15 @@
     <mat-form-field appearance="outline" class="search-field">
       <mat-icon matPrefix>search</mat-icon>
 
-      <input
-        matInput
-        placeholder="Search employee"
-        (keyup)="applyFilter($event)">
+      <input matInput placeholder="Search employee" (keyup)="applyFilter($event)">
     </mat-form-field>
 
   </div>
+  @if (dataSource.data.length === 0) {
 
+  <app-no-records message="No employees found"></app-no-records>
 
+  } @else {
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
 
     <ng-container matColumnDef="employee_id">
@@ -53,27 +53,13 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
   </table>
-
-
-  <!-- Pagination -->
-  <mat-paginator
-    [pageSize]="5"
-    [pageSizeOptions]="[5,10,20]"
-    showFirstLastButtons>
+   <!-- Pagination -->
+  <mat-paginator [pageSize]="5" [pageSizeOptions]="[5,10,20]" showFirstLastButtons>
   </mat-paginator>
+  }
 
 </mat-card>
 
-
-<!-- Floating Add Button -->
-
-<button
-  mat-fab
-  color="primary"
-  class="add-button"
-  routerLink="/employees/add"
-  matTooltip="Add Employee">
-
+<button mat-fab color="primary" class="add-button" routerLink="/employees/add" matTooltip="Add Employee">
   <mat-icon>add</mat-icon>
-
 </button>
