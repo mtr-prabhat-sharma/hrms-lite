@@ -16,80 +16,86 @@ import { ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NoRecordsComponent } from '../../../shared/no-records/no-records.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-employee-list',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatButtonModule, MatCardModule, MatIconModule,
-  MatFormFieldModule, MatInputModule, MatPaginatorModule, RouterModule, MatTooltipModule, NoRecordsComponent ],
+  imports: [
+    CommonModule,
+    MatTableModule,
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatPaginatorModule,
+    RouterModule,
+    MatTooltipModule,
+    NoRecordsComponent,
+    MatProgressSpinnerModule
+  ],
   templateUrl: './employee-list.component.html',
   styleUrl: './employee-list.component.scss',
 })
-export class EmployeeListComponent implements OnInit, AfterViewInit{
-
+export class EmployeeListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   employees: Employee[] = [];
   dataSource = new MatTableDataSource<Employee>();
-
-displayedColumns: string[] = [
-  'employee_id',
-  'full_name',
-  'email',
-  'department',
-  'action'
-];
+  loading: boolean = true;
+  displayedColumns: string[] = ['employee_id', 'full_name', 'email', 'department', 'action'];
 
   constructor(private employeeService: EmployeeService) {}
 
   ngOnInit() {
     this.loadEmployees();
     this.dataSource.filterPredicate = (data: Employee, filter: string) => {
-  const search = filter.toLowerCase();
+      const search = filter.toLowerCase();
 
-  return (
-    (data.employee_id || '').toLowerCase().includes(search) ||
-    (data.full_name || '').toLowerCase().includes(search) ||
-    (data.email || '').toLowerCase().includes(search) ||
-    (data.department || '').toLowerCase().includes(search)
-  );
-};
+      return (
+        (data.employee_id || '').toLowerCase().includes(search) ||
+        (data.full_name || '').toLowerCase().includes(search) ||
+        (data.email || '').toLowerCase().includes(search) ||
+        (data.department || '').toLowerCase().includes(search)
+      );
+    };
   }
 
   ngAfterViewInit() {
-  this.dataSource.paginator = this.paginator;
-}
-
-  applyFilter(event: Event) {
-  const filterValue = (event.target as HTMLInputElement).value;
-  this.dataSource.filter = filterValue.trim().toLowerCase();
-}
-
- loadEmployees() {
-  this.employeeService.getEmployees().subscribe({
-    next: (data) => {
-      this.dataSource.data = data;
-    },
-    error: (err) => {
-      console.error(err);
-    }
-  });
-}
-
-  deleteEmployee(id: number) {
-
-  if (!confirm('Are you sure you want to delete this employee?')) {
-    return;
+    this.dataSource.paginator = this.paginator;
   }
 
-  this.employeeService.deleteEmployee(id)
-  .subscribe({
-    next: () => {
-      this.loadEmployees();
-    },
-    error: (err) => {
-      console.error(err);
-    }
-  });
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 
-}
+  loadEmployees() {
+    this.loading = true;
+    this.employeeService.getEmployees().subscribe({
+      next: (data) => {
+        this.dataSource.data = data;
+        this.loading = false;
+      },
+      error: (err) => {
+        alert(err);
+        this.loading = false;
+      },
+    });
+  }
+
+  deleteEmployee(id: number) {
+    if (!confirm('Are you sure you want to delete this employee?')) {
+      return;
+    }
+
+    this.employeeService.deleteEmployee(id).subscribe({
+      next: () => {
+        this.loadEmployees();
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
+  }
 }

@@ -4,8 +4,12 @@
       <mat-icon>fact_check</mat-icon>
       <h2>Attendance Records</h2>
     </div>
-
-  @if (dataSource.data.length === 0) {
+ @if (loading) {
+    <div class="loader">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  }
+  @else if (dataSource.data.length === 0) {
 
   <app-no-records message="No attendance records found"></app-no-records>
 

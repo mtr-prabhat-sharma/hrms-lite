@@ -95,7 +95,9 @@ employees: Employee[] = [];
       },
 
       error: (err) => {
-        console.error(err);
+        this.snackBar.open(err.error.detail, 'Close', {
+          duration: 3000,
+        });
       },
     });
   }

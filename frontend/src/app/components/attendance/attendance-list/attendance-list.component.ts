@@ -11,6 +11,8 @@ import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
 import { ViewChild } from '@angular/core';
 import { NoRecordsComponent } from '../../../shared/no-records/no-records.component';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-attendance-list',
@@ -24,16 +26,21 @@ import { NoRecordsComponent } from '../../../shared/no-records/no-records.compon
     RouterModule,
     MatPaginatorModule,
     MatTableModule,
-    NoRecordsComponent
+    NoRecordsComponent,
+    MatSnackBarModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './attendance-list.component.html',
   styleUrls: ['./attendance-list.component.scss'],
 })
 export class AttendanceListComponent implements OnInit, AfterViewInit {
-  constructor(private attendanceService: AttendanceService) {}
-  
-  dataSource = new MatTableDataSource<any>();
+  constructor(
+    private attendanceService: AttendanceService,
+    private snackBar: MatSnackBar,
+  ) {}
 
+  dataSource = new MatTableDataSource<any>();
+  loading: boolean = true;
   displayedColumns: string[] = ['employee_id', 'employee_name', 'date', 'status'];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -47,17 +54,21 @@ export class AttendanceListComponent implements OnInit, AfterViewInit {
   }
 
   loadAttendance() {
+    this.loading = true;
     this.attendanceService.getAttendance().subscribe({
       next: (data) => {
-        console.log("data", data)
+        console.log('data', data);
         this.dataSource.data = data;
-            if (this.paginator) {
-        this.dataSource.paginator = this.paginator;
-      }
+        this.loading = false;
+        if (this.paginator) {
+          this.dataSource.paginator = this.paginator;
+        }
       },
 
       error: (err) => {
-        console.error(err);
+        this.snackBar.open(err.error.detail, 'Close', {
+          duration: 3000,
+        });
       },
     });
   }

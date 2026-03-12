@@ -68,7 +68,7 @@ The application uses a **separated frontend and backend architecture**, making i
 ## Tech Stack Used
 
 ### Frontend
-- Angular 17
+- Angular 20
 - Angular Material
 - TypeScript
 - HTML / SCSS

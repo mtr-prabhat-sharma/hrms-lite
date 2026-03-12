@@ -1,23 +1,20 @@
 <mat-card class="table-card">
-
   <div class="header">
-
     <h2>Employees</h2>
-
     <mat-form-field appearance="outline" class="search-field">
       <mat-icon matPrefix>search</mat-icon>
-
       <input matInput placeholder="Search employee" (keyup)="applyFilter($event)">
     </mat-form-field>
 
   </div>
-  @if (dataSource.data.length === 0) {
-
-  <app-no-records message="No employees found"></app-no-records>
-
+  @if (loading) {
+    <div class="loader">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  } @else if (dataSource.data.length === 0) {
+    <app-no-records message="No employees found"></app-no-records>
   } @else {
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
-
     <ng-container matColumnDef="employee_id">
       <th mat-header-cell *matHeaderCellDef>Employee ID</th>
       <td mat-cell *matCellDef="let e">{{e.employee_id}}</td>
@@ -53,7 +50,7 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
   </table>
-   <!-- Pagination -->
+  <!-- Pagination -->
   <mat-paginator [pageSize]="5" [pageSizeOptions]="[5,10,20]" showFirstLastButtons>
   </mat-paginator>
   }
