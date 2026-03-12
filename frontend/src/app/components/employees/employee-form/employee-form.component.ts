@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { EmployeeService } from '../../../services/employee.service';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-employee-form',
@@ -18,6 +19,7 @@ import { EmployeeService } from '../../../services/employee.service';
     MatInputModule,
     MatButtonModule,
     MatCardModule,
+    MatSelectModule 
   ],
   providers: [],
   templateUrl: './employee-form.component.html',
@@ -27,6 +29,13 @@ export class EmployeeFormComponent {
 
   employeeForm: FormGroup;
   submitted = false;
+  departments: string[] = [
+  'HR',
+  'Engineering',
+  'Finance',
+  'Sales',
+  'Marketing'
+];
 
   constructor(private fb: FormBuilder, private employeeService: EmployeeService) {
 

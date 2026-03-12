@@ -43,17 +43,24 @@
     </mat-form-field>
 
 
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Department</mat-label>
-      <input matInput formControlName="department">
+  <mat-form-field appearance="outline" class="full-width">
+  <mat-label>Department</mat-label>
 
-      @if (submitted && employeeForm.controls['department'].errors) {
-        <mat-error>
-          Department is required
-        </mat-error>
-      }
+  <mat-select formControlName="department">
 
-    </mat-form-field>
+    <mat-option *ngFor="let dept of departments" [value]="dept">
+      {{ dept }}
+    </mat-option>
+
+  </mat-select>
+
+  @if (submitted && employeeForm.controls['department'].errors) {
+    <mat-error>
+      Department is required
+    </mat-error>
+  }
+
+</mat-form-field>
 
 
     <button mat-raised-button color="primary" type="submit">

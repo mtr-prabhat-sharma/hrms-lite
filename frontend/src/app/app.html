@@ -1,1 +1,17 @@
-<router-outlet />
+<mat-toolbar color="primary">
+
+  <span class="logo">HRMS Lite</span>
+
+  <span class="spacer"></span>
+
+  <button mat-button routerLink="/employees">
+    Employees
+  </button>
+
+  <button mat-button routerLink="/attendance">
+    Attendance
+  </button>
+
+</mat-toolbar>
+
+<router-outlet></router-outlet>

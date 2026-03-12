@@ -1,55 +1,79 @@
 <mat-card class="table-card">
 
-  <h2>Employee List</h2>
+  <div class="header">
 
-  <table class="employee-table">
+    <h2>Employees</h2>
 
-    <thead>
-      <tr>
-        <th>Employee ID</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Department</th>
-        <th>Action</th>
-      </tr>
-    </thead>
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-icon matPrefix>search</mat-icon>
 
-    <tbody>
+      <input
+        matInput
+        placeholder="Search employee"
+        (keyup)="applyFilter($event)">
+    </mat-form-field>
 
-      @if (employees.length === 0) {
+  </div>
 
-        <tr>
-          <td colspan="5" class="empty">
-            No employees found
-          </td>
-        </tr>
 
-      } @else {
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
 
-        @for (employee of employees; track $index) {
+    <ng-container matColumnDef="employee_id">
+      <th mat-header-cell *matHeaderCellDef>Employee ID</th>
+      <td mat-cell *matCellDef="let e">{{e.employee_id}}</td>
+    </ng-container>
 
-          <tr>
-            <td>{{ employee.employee_id }}</td>
-            <td>{{ employee.full_name }}</td>
-            <td>{{ employee.email }}</td>
-            <td>{{ employee.department }}</td>
+    <ng-container matColumnDef="full_name">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let e">{{e.full_name}}</td>
+    </ng-container>
 
-            <td>
-              <button
-                mat-raised-button
-                color="warn"
-                (click)="deleteEmployee($index)">
-                Delete
-              </button>
-            </td>
-          </tr>
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef>Email</th>
+      <td mat-cell *matCellDef="let e">{{e.email}}</td>
+    </ng-container>
 
-        }
+    <ng-container matColumnDef="department">
+      <th mat-header-cell *matHeaderCellDef>Department</th>
+      <td mat-cell *matCellDef="let e">{{e.department}}</td>
+    </ng-container>
 
-      }
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>Action</th>
+      <td mat-cell *matCellDef="let e">
 
-    </tbody>
+        <button mat-icon-button color="warn" (click)="deleteEmployee(e.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
   </table>
 
+
+  <!-- Pagination -->
+  <mat-paginator
+    [pageSize]="5"
+    [pageSizeOptions]="[5,10,20]"
+    showFirstLastButtons>
+  </mat-paginator>
+
 </mat-card>
+
+
+<!-- Floating Add Button -->
+
+<button
+  mat-fab
+  color="primary"
+  class="add-button"
+  routerLink="/employees/add"
+  matTooltip="Add Employee">
+
+  <mat-icon>add</mat-icon>
+
+</button>

@@ -16,31 +16,31 @@
 
       @if (attendanceRecords.length === 0) {
 
-        <tr>
-          <td colspan="3" class="empty">
-            No attendance records found
-          </td>
-        </tr>
+      <tr>
+        <td colspan="3" class="empty">
+          No attendance records found
+        </td>
+      </tr>
 
       } @else {
 
-        @for (record of attendanceRecords; track $index) {
+      @for (record of attendanceRecords; track $index) {
 
-          <tr>
-            <td>{{ record.employee_id }}</td>
-            <td>{{ record.date }}</td>
-            <td>
+      <tr>
+        <td>{{ record.employee_id }}</td>
+        <td>{{ record.date }}</td>
+        <td>
 
-              @if (record.status === 'Present') {
-                <span class="present">Present</span>
-              } @else {
-                <span class="absent">Absent</span>
-              }
+          @if (record.status === 'Present') {
+          <span class="present">Present</span>
+          } @else {
+          <span class="absent">Absent</span>
+          }
 
-            </td>
-          </tr>
+        </td>
+      </tr>
 
-        }
+      }
 
       }
 
@@ -49,3 +49,8 @@
   </table>
 
 </mat-card>
+<button mat-fab color="primary" class="add-button" routerLink="/attendance/add" matTooltip="Mark Attendance">
+
+  <mat-icon>add</mat-icon>
+
+</button>
