@@ -10,14 +10,11 @@ attendance_model.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="HRMS Lite")
 
-origins = [
-    "http://localhost:4200"
-]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
+    allow_origins=["*"],      # allow all domains
+    allow_credentials=False,  # must be False with "*"
     allow_methods=["*"],
     allow_headers=["*"],
 )

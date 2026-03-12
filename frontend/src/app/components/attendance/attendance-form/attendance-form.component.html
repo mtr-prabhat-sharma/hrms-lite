@@ -1,6 +1,9 @@
 <mat-card class="form-card">
 
-  <h2>Mark Attendance</h2>
+ <div class="form-header">
+    <mat-icon class="header-icon">fact_check</mat-icon>
+    <h2>Mark Attendance</h2>
+  </div>
 
   <form [formGroup]="attendanceForm" (ngSubmit)="onSubmit()">
     <mat-form-field appearance="outline" class="full-width">
@@ -65,8 +68,10 @@
 
     </mat-form-field>
 
-    <button mat-raised-button color="primary" type="submit">
-      Save Attendance
-    </button>
+   <div class="button-container">
+      <button mat-raised-button color="primary" type="submit">
+        Save Attendance
+      </button>
+    </div>
   </form>
 </mat-card>

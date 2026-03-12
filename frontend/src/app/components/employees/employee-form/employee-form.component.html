@@ -1,6 +1,9 @@
 <mat-card class="form-card">
 
-  <h2>Add Employee</h2>
+  <div class="form-header">
+    <mat-icon class="header-icon">person_add</mat-icon>
+    <h2>Add Employee</h2>
+  </div>
 
   <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
 
@@ -9,9 +12,9 @@
       <input matInput formControlName="employee_id">
 
       @if (submitted && employeeForm.controls['employee_id'].errors) {
-        <mat-error>
-          Employee ID is required
-        </mat-error>
+      <mat-error>
+        Employee ID is required
+      </mat-error>
       }
 
     </mat-form-field>
@@ -22,9 +25,9 @@
       <input matInput formControlName="full_name">
 
       @if (submitted && employeeForm.controls['full_name'].errors) {
-        <mat-error>
-          Full name is required
-        </mat-error>
+      <mat-error>
+        Full name is required
+      </mat-error>
       }
 
     </mat-form-field>
@@ -35,37 +38,38 @@
       <input matInput formControlName="email">
 
       @if (submitted && employeeForm.controls['email'].errors) {
-        <mat-error>
-          Enter a valid email
-        </mat-error>
+      <mat-error>
+        Enter a valid email
+      </mat-error>
       }
 
     </mat-form-field>
 
 
-  <mat-form-field appearance="outline" class="full-width">
-  <mat-label>Department</mat-label>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Department</mat-label>
 
-  <mat-select formControlName="department">
+      <mat-select formControlName="department">
 
-    <mat-option *ngFor="let dept of departments" [value]="dept">
-      {{ dept }}
-    </mat-option>
+        <mat-option *ngFor="let dept of departments" [value]="dept">
+          {{ dept }}
+        </mat-option>
 
-  </mat-select>
+      </mat-select>
 
-  @if (submitted && employeeForm.controls['department'].errors) {
-    <mat-error>
-      Department is required
-    </mat-error>
-  }
+      @if (submitted && employeeForm.controls['department'].errors) {
+      <mat-error>
+        Department is required
+      </mat-error>
+      }
 
-</mat-form-field>
+    </mat-form-field>
 
-
-    <button mat-raised-button color="primary" type="submit">
-      Add Employee
-    </button>
+    <div class="button-container">
+      <button mat-raised-button color="primary" type="submit">
+        Add Employee
+      </button>
+    </div>
 
   </form>
 

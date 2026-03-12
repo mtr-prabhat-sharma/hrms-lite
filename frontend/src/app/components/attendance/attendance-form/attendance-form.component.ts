@@ -36,13 +36,7 @@ import { MatIconModule } from '@angular/material/icon';
 export class AttendanceFormComponent implements OnInit {
   attendanceForm: FormGroup;
   submitted = false;
-
-  employees: Employee[] = [
-    { employee_id: 'EMP001', full_name: 'John Doe' },
-    { employee_id: 'EMP002', full_name: 'Jane Smith' },
-    { employee_id: 'EMP003', full_name: 'Mike Johnson' },
-  ];
-
+employees: Employee[] = [];
   constructor(
     private fb: FormBuilder,
     private attendanceService: AttendanceService,
@@ -60,41 +54,39 @@ export class AttendanceFormComponent implements OnInit {
     this.loadEmployees();
   }
 
-onSubmit() {
+  onSubmit() {
+    this.submitted = true;
 
-  this.submitted = true;
-
-  if (this.attendanceForm.invalid) {
-    return;
-  }
-
-  const formValue = this.attendanceForm.value;
-
-  const payload = {
-    ...formValue,
-    date: formValue.date.toISOString().split('T')[0] // convert to YYYY-MM-DD
-  };
-
-  this.attendanceService.markAttendance(payload).subscribe({
-
-    next: (res) => {
-      this.snackBar.open('Attendance recorded successfully', 'Close', {
-        duration: 3000
-      });
-
-      this.attendanceForm.reset();
-      this.submitted = false;
-    },
-
-    error: (err) => {
-      this.snackBar.open(err.error.detail || 'Error marking attendance', 'Close', {
-        duration: 3000
-      });
+    if (this.attendanceForm.invalid) {
+      return;
     }
 
-  });
+    const formValue = this.attendanceForm.value;
 
-}
+    const payload = {
+      ...formValue,
+      date: formValue.date.toISOString().split('T')[0], // convert to YYYY-MM-DD
+    };
+
+    this.attendanceService.markAttendance(payload).subscribe({
+      next: (res) => {
+        this.snackBar.open('Attendance recorded successfully', 'Close', {
+          duration: 3000,
+        });
+
+        this.attendanceForm.reset();
+        this.attendanceForm.markAsPristine();
+        this.attendanceForm.markAsUntouched();
+        this.submitted = false;
+      },
+
+      error: (err) => {
+        this.snackBar.open(err.error.detail || 'Error marking attendance', 'Close', {
+          duration: 3000,
+        });
+      },
+    });
+  }
 
   loadEmployees() {
     this.employeeService.getEmployees().subscribe({

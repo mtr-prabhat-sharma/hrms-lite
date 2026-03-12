@@ -34,7 +34,7 @@ export class AttendanceListComponent implements OnInit, AfterViewInit {
   
   dataSource = new MatTableDataSource<any>();
 
-  displayedColumns: string[] = ['employee_id', 'date', 'status'];
+  displayedColumns: string[] = ['employee_id', 'employee_name', 'date', 'status'];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
