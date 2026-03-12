@@ -1,1 +1,51 @@
-<p>attendance-list works!</p>
+<mat-card class="table-card">
+
+  <h2>Attendance Records</h2>
+
+  <table class="attendance-table">
+
+    <thead>
+      <tr>
+        <th>Employee</th>
+        <th>Date</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      @if (attendanceRecords.length === 0) {
+
+        <tr>
+          <td colspan="3" class="empty">
+            No attendance records found
+          </td>
+        </tr>
+
+      } @else {
+
+        @for (record of attendanceRecords; track $index) {
+
+          <tr>
+            <td>{{ record.employee_name }}</td>
+            <td>{{ record.date }}</td>
+            <td>
+
+              @if (record.status === 'Present') {
+                <span class="present">Present</span>
+              } @else {
+                <span class="absent">Absent</span>
+              }
+
+            </td>
+          </tr>
+
+        }
+
+      }
+
+    </tbody>
+
+  </table>
+
+</mat-card>

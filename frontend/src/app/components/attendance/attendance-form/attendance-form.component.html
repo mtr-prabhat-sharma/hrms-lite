@@ -1,1 +1,67 @@
-<p>attendance-form works!</p>
+<mat-card class="form-card">
+
+  <h2>Mark Attendance</h2>
+
+  <form [formGroup]="attendanceForm" (ngSubmit)="onSubmit()">
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Employee</mat-label>
+
+      <mat-select formControlName="employee_id">
+
+        @for (emp of employees; track emp.employee_id) {
+          <mat-option [value]="emp.employee_id">
+            {{ emp.full_name }}
+          </mat-option>
+        }
+
+      </mat-select>
+
+      @if (submitted && attendanceForm.controls['employee_id'].errors) {
+        <mat-error>
+          Employee is required
+        </mat-error>
+      }
+
+    </mat-form-field>
+
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Date</mat-label>
+      <input matInput type="date" formControlName="date">
+
+      @if (submitted && attendanceForm.controls['date'].errors) {
+        <mat-error>
+          Date is required
+        </mat-error>
+      }
+
+    </mat-form-field>
+
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Status</mat-label>
+
+      <mat-select formControlName="status">
+
+        <mat-option value="Present">Present</mat-option>
+        <mat-option value="Absent">Absent</mat-option>
+
+      </mat-select>
+
+      @if (submitted && attendanceForm.controls['status'].errors) {
+        <mat-error>
+          Status is required
+        </mat-error>
+      }
+
+    </mat-form-field>
+
+
+    <button mat-raised-button color="primary" type="submit">
+      Save Attendance
+    </button>
+
+  </form>
+
+</mat-card>
