@@ -1,1 +1,65 @@
-<p>employee-form works!</p>
+<mat-card class="form-card">
+
+  <h2>Add Employee</h2>
+
+  <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Employee ID</mat-label>
+      <input matInput formControlName="employee_id">
+
+      @if (submitted && employeeForm.controls['employee_id'].errors) {
+        <mat-error>
+          Employee ID is required
+        </mat-error>
+      }
+
+    </mat-form-field>
+
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Full Name</mat-label>
+      <input matInput formControlName="full_name">
+
+      @if (submitted && employeeForm.controls['full_name'].errors) {
+        <mat-error>
+          Full name is required
+        </mat-error>
+      }
+
+    </mat-form-field>
+
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email">
+
+      @if (submitted && employeeForm.controls['email'].errors) {
+        <mat-error>
+          Enter a valid email
+        </mat-error>
+      }
+
+    </mat-form-field>
+
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Department</mat-label>
+      <input matInput formControlName="department">
+
+      @if (submitted && employeeForm.controls['department'].errors) {
+        <mat-error>
+          Department is required
+        </mat-error>
+      }
+
+    </mat-form-field>
+
+
+    <button mat-raised-button color="primary" type="submit">
+      Add Employee
+    </button>
+
+  </form>
+
+</mat-card>
