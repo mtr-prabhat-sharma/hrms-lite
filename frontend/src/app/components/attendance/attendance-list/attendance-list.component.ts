@@ -49,6 +49,7 @@ export class AttendanceListComponent implements OnInit, AfterViewInit {
   loadAttendance() {
     this.attendanceService.getAttendance().subscribe({
       next: (data) => {
+        console.log("data", data)
         this.dataSource.data = data;
             if (this.paginator) {
         this.dataSource.paginator = this.paginator;

@@ -9,8 +9,8 @@ class AttendanceCreate(BaseModel):
 
 
 class AttendanceResponse(BaseModel):
-    id: int
     employee_id: str
+    employee_name: str
     date: date
     status: str
 

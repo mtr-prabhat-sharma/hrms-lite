@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
+
 from app.database.db import SessionLocal
 from app.models.attendance_model import Attendance
 from app.models.employee_model import Employee
@@ -40,7 +41,13 @@ def mark_attendance(attendance: AttendanceCreate, db: Session = Depends(get_db))
         db.add(new_attendance)
         db.commit()
         db.refresh(new_attendance)
-        return new_attendance
+
+        return {
+            "employee_id": new_attendance.employee_id,
+            "employee_name": employee.full_name,
+            "date": new_attendance.date,
+            "status": new_attendance.status
+        }
 
     except IntegrityError:
         db.rollback()
@@ -55,6 +62,20 @@ def mark_attendance(attendance: AttendanceCreate, db: Session = Depends(get_db))
 @router.get("/", response_model=list[AttendanceResponse])
 def get_attendance(db: Session = Depends(get_db)):
 
-    attendance_records = db.query(Attendance).all()
+    records = (
+        db.query(Attendance, Employee.full_name)
+        .join(Employee, Attendance.employee_id == Employee.employee_id)
+        .all()
+    )
 
-    return attendance_records
+    result = []
+
+    for attendance, name in records:
+        result.append({
+            "employee_id": attendance.employee_id,
+            "employee_name": name,
+            "date": attendance.date,
+            "status": attendance.status
+        })
+
+    return result
