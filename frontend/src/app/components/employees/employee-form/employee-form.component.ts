@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { EmployeeService } from '../../../services/employee.service';
 
 @Component({
   selector: 'app-employee-form',
@@ -27,7 +28,7 @@ export class EmployeeFormComponent {
   employeeForm: FormGroup;
   submitted = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private employeeService: EmployeeService) {
 
     this.employeeForm = this.fb.group({
       employee_id: ['', Validators.required],
@@ -40,21 +41,28 @@ export class EmployeeFormComponent {
 
   onSubmit() {
 
-    this.submitted = true;
+  this.submitted = true;
 
-    if (this.employeeForm.invalid) {
-      return;
-    }
-
-    const employeeData = this.employeeForm.value;
-
-    // No API call yet — just print data
-    console.log('Employee Created:', employeeData);
-
-    alert('Employee data captured in console');
-
-    this.employeeForm.reset();
-    this.submitted = false;
+  if (this.employeeForm.invalid) {
+    return;
   }
+
+  this.employeeService.addEmployee(this.employeeForm.value)
+  .subscribe({
+    next: (res) => {
+      console.log('Employee created', res);
+
+      alert('Employee added successfully');
+
+      this.employeeForm.reset();
+      this.submitted = false;
+    },
+    error: (err) => {
+      console.error(err);
+      alert(err.error.detail || 'Error creating employee');
+    }
+  });
+
+}
   
 }

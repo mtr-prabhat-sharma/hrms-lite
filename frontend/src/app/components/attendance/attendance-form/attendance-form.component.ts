@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { Employee } from '../../../models/employee.model';
+import { AttendanceService } from '../../../services/attendance.service';
 
 
 @Component({
@@ -34,7 +35,7 @@ export class AttendanceFormComponent {
     { employee_id: 'EMP003', full_name: 'Mike Johnson' }
   ];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,  private attendanceService: AttendanceService) {
 
     this.attendanceForm = this.fb.group({
       employee_id: ['', Validators.required],
@@ -44,22 +45,30 @@ export class AttendanceFormComponent {
 
   }
 
-  onSubmit() {
+ onSubmit() {
 
-    this.submitted = true;
+  this.submitted = true;
 
-    if (this.attendanceForm.invalid) {
-      return;
-    }
-
-    const attendanceData = this.attendanceForm.value;
-
-    console.log('Attendance Recorded:', attendanceData);
-
-    alert('Attendance saved in console');
-
-    this.attendanceForm.reset();
-    this.submitted = false;
+  if (this.attendanceForm.invalid) {
+    return;
   }
+
+  this.attendanceService.markAttendance(this.attendanceForm.value)
+  .subscribe({
+    next: (res) => {
+      console.log('Attendance saved', res);
+
+      alert('Attendance recorded');
+
+      this.attendanceForm.reset();
+      this.submitted = false;
+    },
+    error: (err) => {
+      console.error(err);
+      alert(err.error.detail || 'Error marking attendance');
+    }
+  });
+
+}
 
 }
