@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { Attendance } from '../models/attendance.model';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AttendanceService {
-    private apiUrl = 'http://127.0.0.1:8000/attendance';
+  private apiUrl = `${environment.apiUrl}/attendance`;
 
   constructor(private http: HttpClient) {}
 
@@ -21,5 +22,4 @@ export class AttendanceService {
   markAttendance(data: Attendance): Observable<Attendance> {
     return this.http.post<Attendance>(this.apiUrl, data);
   }
-
 }
