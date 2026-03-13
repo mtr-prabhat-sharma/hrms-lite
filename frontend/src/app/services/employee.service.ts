@@ -10,18 +10,18 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class EmployeeService {
-  private apiUrl = `${environment.apiUrl}/employees/`;
+  private apiUrl = `${environment.apiUrl}/employees`;
 
   constructor(private http: HttpClient) {}
 
   // GET employees
   getEmployees(): Observable<Employee[]> {
-    return this.http.get<Employee[]>(this.apiUrl);
+    return this.http.get<Employee[]>(`${this.apiUrl}/`);
   }
 
   // CREATE employee
   addEmployee(employee: Employee): Observable<Employee> {
-    return this.http.post<Employee>(this.apiUrl, employee);
+    return this.http.post<Employee>(`${this.apiUrl}/`, employee);
   }
 
   // DELETE employee

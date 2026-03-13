@@ -9,17 +9,17 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class AttendanceService {
-  private apiUrl = `${environment.apiUrl}/attendance/`;
+  private apiUrl = `${environment.apiUrl}/attendance`;
 
   constructor(private http: HttpClient) {}
 
   // GET attendance records
   getAttendance(): Observable<Attendance[]> {
-    return this.http.get<Attendance[]>(this.apiUrl);
+    return this.http.get<Attendance[]>(`${this.apiUrl}/`);
   }
 
   // MARK attendance
   markAttendance(data: Attendance): Observable<Attendance> {
-    return this.http.post<Attendance>(this.apiUrl, data);
+    return this.http.post<Attendance>(`${this.apiUrl}/`, data);
   }
 }
